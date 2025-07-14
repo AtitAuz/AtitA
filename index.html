@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>AtitA - Кафе Мороженого</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+  <img src="D:\База данных/лого.png" alt="AtitA Logo" style="width: 300px; height: auto;">
+</div>
+        <nav>
+            <a href="index.html">Главная</a>
+            <a href="menu.html">Меню</a>
+            <a href="login.html">Вход</a>
+            <a href="register.html">Регистрация</a>
+        </nav>
+    </header><header>
+    <div class="logo">
+        <img src="images/logo.png" alt="AtitA Logo">
+    </div>
+    
+    <button class="burger" onclick="toggleMenu()">☰</button>
+
+    <nav class="nav-links">
+        <a href="index.html">Главная</a>
+        <a href="menu.html">Меню</a>
+        <a href="login.html">Вход</a>
+        <a href="register.html">Регистрация</a>
+    </nav>
+</header>
+    <main>
+     <section id="slider">
+    <h2>🍧 Популярные вкусы</h2>
+    <div class="slider-container">
+        <button class="slider-btn left" onclick="prevSlide()">&#10094;</button>
+        <div class="slider">
+            <div class="slide">
+                <img src="D:\База данных/Мороженое Шоколад.jpg" alt="Шоколадное мороженое">
+                <p>Шоколад</p>
+            </div>
+            <div class="slide">
+                <img src="D:\База данных/Мороженое-Крем Брюле.jpg" alt="Крем Брюле">
+                <p>Крем Брюле</p>
+            </div>
+            <div class="slide">
+                <img src="D:\База данных/Мороженое-Орео.jpg" alt="Орео">
+                <p>Орео</p>
+            </div>
+            <div class="slide">
+                <img src="D:\База данных/Мороженое-Рафаэло.jpg" alt="Рафаэлло">
+                <p>Рафаэлло</p>
+            </div>
+        </div>
+        <button class="slider-btn right" onclick="nextSlide()">&#10095;</button>
+    </div>
+</section>
+        <section>
+            <h2>Добро пожаловать в AtitA!</h2>
+            <p>Лучшее мороженое в Ташкенте! — свежесть и вкус каждый день!</p>
+        </section>
+
+        <section id="new">
+            <h2>🍨 Новинки</h2>
+            <ul>
+                <li>Мороженое "Орео"</li>
+                <li>Мороженое "Рафаэло"</li>
+                <li>Мороженое - Крем брюле</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 AtitA. Все права защищены.</p>
+    </footer>
+</body>
+<script>
+    let currentIndex = 0;
+
+    function updateSlider() {
+        const slider = document.querySelector('.slider');
+        const slideWidth = 320;
+        slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+    }
+
+    function prevSlide() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateSlider();
+        }
+    }
+
+    function nextSlide() {
+        const totalSlides = document.querySelectorAll('.slide').length;
+        if (currentIndex < totalSlides - 1) {
+            currentIndex++;
+            updateSlider();
+        }
+    }
+</script>
+</html>
