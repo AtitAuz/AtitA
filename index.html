@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>AtitA - Кафе Мороженого</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+    <div class="logo">
+        <img src="images/logo.png" alt="AtitA Logo">
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">☰</div> <!-- Вот сюда -->
+</header>
+    <nav class="navbar">
+    <a href="index.html" class="active" data-i18n="home">Главная</a>
+    <a href="menu.html" data-i18n="menu">Меню</a>
+    <a href="login.html" data-i18n="login">Вход</a>
+    <a href="register.html" data-i18n="register">Регистрация</a>
+</nav>
+        <!-- Кнопки языка -->
+        <div class="lang-switcher">
+    <button onclick="setLanguage('ru')">РУС</button>
+    <button onclick="setLanguage('uz')">O‘ZB</button>
+</div>
+    </nav>
+</header>
+    <main>
+        <section id="slider">
+            <h2 data-i18n="popular_flavors">🍧 Популярные вкусы</h2>
+            <div class="slider-container">
+                <button class="slider-btn left" onclick="prevSlide()">&#10094;</button>
+                <div class="slider">
+                   <div class="slide">
+  <img src="images/icecream chocolade.jpg" alt="Шоколадное мороженое" width="300" />
+  <p data-translate="slide_chocolate">Шоколад</p>
+</div>
+<div class="slide">
+  <img src="images/icecream crezm brule.jpg" alt="Крем Брюле" width="300" />
+  <p data-translate="slide_creme_brulee">Крем Брюле</p>
+</div>
+<div class="slide">
+  <img src="images/icecream oreo.jpg" alt="Орео" width="300" />
+  <p data-translate="slide_oreo">Орео</p>
+</div>
+<div class="slide">
+  <img src="images/icecream rafaelo.jpg" alt="Рафаэлло" width="300" />
+  <p data-translate="slide_rafaello">Рафаэлло</p>
+</div>
+                </div>
+                <button class="slider-btn right" onclick="nextSlide()">&#10095;</button>
+            </div>
+        </section>
+        <section>
+    <h2 data-i18n="welcome_title">Добро пожаловать в AtitA!</h2>
+    <p data-i18n="welcome_text">Лучшее мороженое в Ташкенте! — свежесть и вкус каждый день!</p>
+        </section>
+    <footer>
+    <p data-i18n="footer">&copy; 2023 AtitA. Все права защищены.</p>
+    </footer>
+</body>
+<script>
+    // Код слайдера (у тебя уже есть)
+    let currentIndex = 0;
+    function updateSlider() {
+        const slider = document.querySelector('.slider');
+        const slideWidth = 320;
+        slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+    }
+    function prevSlide() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateSlider();
+        }
+    }
+    function nextSlide() {
+        const totalSlides = document.querySelectorAll('.slide').length;
+        if (currentIndex < totalSlides - 1) {
+            currentIndex++;
+            updateSlider();
+        }
+    }
+
+    // ⬇️ ВСТАВЬ ЭТО НИЖЕ
+    const translations = {
+        ru: {
+            slide_chocolate: "Шоколад",
+  slide_creme_brulee: "Крем Брюле",
+  slide_oreo: "Орео",
+  slide_rafaello: "Рафаэлло",
+            home: "Главная",
+            menu: "Меню",
+            login: "Вход",
+            register: "Регистрация",
+            popular_flavors: "🍧 Популярные вкусы",
+            welcome_title: "Добро пожаловать в AtitA!",
+            welcome_text: "Лучшее мороженое в Ташкенте! — свежесть и вкус каждый день!",
+            footer: "&copy; 2023 AtitA. Все права защищены."
+        },
+        uz: {
+            slide_chocolate: "Shokolad",
+  slide_creme_brulee: "Krem bryule",
+  slide_oreo: "Oreo",
+  slide_rafaello: "Rafaello",
+            home: "Bosh sahifa",
+            menu: "Menyu",
+            login: "Kirish",
+            register: "Ro‘yxatdan o‘tish",
+            popular_flavors: "🍧 Mashhur taʼmlar",
+            welcome_title: "AtitAʼga xush kelibsiz!",
+            welcome_text: "Toshkentdagi eng yaxshi muzqaymoq — har kuni yangilik va lazzat!",
+            footer: "&copy; 2023 AtitA. Barcha huquqlar himoyalangan."
+        }
+    };
+
+    function setLanguage(lang) {
+        const elements = document.querySelectorAll('[data-i18n]');
+        elements.forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations[lang][key]) {
+                el.innerHTML = translations[lang][key];
+            }
+        });
+        localStorage.setItem('lang', lang);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedLang = localStorage.getItem('lang') || 'ru';
+        setLanguage(savedLang);
+    });
+</script>
+<script>
+function toggleMenu() {
+  const navbar = document.querySelector('.navbar');
+  navbar.classList.toggle('mobile-visible');
+}
+</script>
+
+
+</body>

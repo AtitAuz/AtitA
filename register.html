@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Регистрация - AtitA</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('your-background-image.png') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      padding: 30px 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+      position: relative;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: #ffffff;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background-color: #ffd1dc;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #ffb4c1;
+    }
+
+    #recaptcha-container {
+      margin-bottom: 20px;
+    }
+
+    #code-form {
+      display: none;
+    }
+
+    #message {
+      color: red;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    #telegram-login {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    @media screen and (max-width: 480px) {
+      .container {
+        border-radius: 0;
+        height: 100vh;
+      }
+      .back-btn {
+        top: 10px;
+        left: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Кнопка "назад" -->
+    <button class="back-btn" onclick="window.history.back()">←</button>
+
+    <h1>Регистрация в AtitA</h1>
+
+    <div id="message"></div>
+
+    <!-- Форма входа по телефону -->
+    <form id="phone-form">
+      <label for="phone">Номер телефона:</label>
+      <input type="tel" id="phone" placeholder="+998XXXXXXXXX" required />
+      <div id="recaptcha-container"></div>
+      <button type="button" id="send-code">Отправить код</button>
+    </form>
+
+    <!-- Форма ввода кода -->
+    <form id="code-form">
+      <label for="code">Введите код из SMS:</label>
+      <input type="text" id="code" required />
+      <button type="button" id="verify-code">Подтвердить код</button>
+    </form>
+
+    <!-- Telegram Login -->
+    <div id="telegram-login">
+      <p>Или войдите через Telegram:</p>
+      <script async src="https://telegram.org/js/telegram-widget.js?7"
+        data-telegram-login="AtitAuz_bot"
+        data-size="large"
+        data-userpic="false"
+        data-onauth="onTelegramAuth(user)"
+        data-request-access="write">
+      </script>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "ТВОЙ_API_KEY",
+      authDomain: "ТВОЙ_ПРОЕКТ.firebaseapp.com",
+      projectId: "ТВОЙ_ПРОЕКТ",
+      storageBucket: "ТВОЙ_ПРОЕКТ.appspot.com",
+      messagingSenderId: "ТВОЙ_SENDER_ID",
+      appId: "ТВОЙ_APP_ID"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const phoneForm = document.getElementById('phone-form');
+    const codeForm = document.getElementById('code-form');
+    const sendCodeBtn = document.getElementById('send-code');
+    const verifyCodeBtn = document.getElementById('verify-code');
+    const messageDiv = document.getElementById('message');
+    let confirmationResult = null;
+
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+      size: 'normal',
+      callback: () => sendCodeBtn.disabled = false,
+      'expired-callback': () => sendCodeBtn.disabled = true
+    });
+    recaptchaVerifier.render();
+
+    sendCodeBtn.addEventListener('click', () => {
+      messageDiv.textContent = '';
+      const phoneNumber = document.getElementById('phone').value.trim();
+      if (!phoneNumber.startsWith('+')) {
+        messageDiv.textContent = 'Телефон должен начинаться с +998...';
+        return;
+      }
+
+      auth.signInWithPhoneNumber(phoneNumber, window.recaptchaVerifier)
+        .then(result => {
+          confirmationResult = result;
+          messageDiv.style.color = 'green';
+          messageDiv.textContent = 'Код отправлен!';
+          phoneForm.style.display = 'none';
+          codeForm.style.display = 'block';
+        })
+        .catch(error => {
+          messageDiv.style.color = 'red';
+          messageDiv.textContent = error.message;
+        });
+    });
+
+    verifyCodeBtn.addEventListener('click', () => {
+      const code = document.getElementById('code').value.trim();
+      if (!code) {
+        messageDiv.textContent = 'Введите код.';
+        return;
+      }
+
+      confirmationResult.confirm(code)
+        .then(result => {
+          const user = result.user;
+          messageDiv.style.color = 'green';
+          messageDiv.textContent = 'Успешно! Добро пожаловать, ' + (user.phoneNumber || '');
+          codeForm.style.display = 'none';
+        })
+        .catch(error => {
+          messageDiv.style.color = 'red';
+          messageDiv.textContent = 'Неверный код.';
+        });
+    });
+
+    function onTelegramAuth(user) {
+      console.log('Telegram user:', user);
+      messageDiv.style.color = 'green';
+      messageDiv.textContent = `Привет, ${user.first_name || ''}! Telegram ID: ${user.id}`;
+      phoneForm.style.display = 'none';
+      codeForm.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
