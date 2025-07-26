@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Профиль - AtitA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e6f7ff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .profile-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+      position: relative;
+    }
+
+    .profile-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    #profileAvatarPreview {
+      display: block;
+      margin: 15px auto;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 12px;
+      background-color: #00c0ff;
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #profileMessage {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    #header-avatar {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <img src="images/default-avatar.png" id="header-avatar" alt="Профиль" title="Ваш аватар">
+
+    <h2>Профиль пользователя</h2>
+
+    <label for="profileFirstName">Имя:</label>
+    <input type="text" id="profileFirstName" />
+
+    <label for="profileLastName">Фамилия:</label>
+    <input type="text" id="profileLastName" />
+
+    <label>Выберите аватар:</label>
+<div class="avatar-list">
+  <img src="images/avatars/ava1.png" class="avatar-option" data-name="ava1.png" alt="Аватар 1">
+  <!-- Добавляй больше при необходимости -->
+</div>
+<img id="profileAvatarPreview" src="images/avatars/ava1.png" alt="Превью аватара" />
+
+    <button id="saveProfile">Сохранить</button>
+
+    <p id="profileMessage"></p>
+  </div>
+
+<script> 
+  const profileFirstName = document.getElementById('profileFirstName');
+  const profileLastName = document.getElementById('profileLastName');
+  const profileAvatarPreview = document.getElementById('profileAvatarPreview');
+  const profileMessage = document.getElementById('profileMessage');
+  const headerAvatar = document.getElementById('header-avatar');
+  const saveButton = document.getElementById('saveProfile');
+
+  const PROFILE_KEY = 'user_profile';
+
+  // Загрузка данных из localStorage
+  function loadProfile() {
+    const data = JSON.parse(localStorage.getItem(PROFILE_KEY)) || {};
+    profileFirstName.value = data.firstName || '';
+    profileLastName.value = data.lastName || '';
+    profileAvatarPreview.src = data.avatar || 'images/default-avatar.png';
+    headerAvatar.src = data.avatar || 'images/default-avatar.png';
+  }
+
+  // ✅ Выбор аватара по клику
+  document.querySelectorAll('.avatar-option').forEach(img => {
+    img.addEventListener('click', () => {
+      profileAvatarPreview.src = img.src;
+    });
+  });
+
+  // Сохранение профиля
+  saveButton.addEventListener('click', () => {
+    const data = JSON.parse(localStorage.getItem(PROFILE_KEY)) || {};
+    const now = new Date();
+    let message = '';
+
+    const firstName = profileFirstName.value.trim();
+    const lastName = profileLastName.value.trim();
+    const avatar = profileAvatarPreview.src;
+
+    const diffDays = (dateStr) => {
+      if (!dateStr) return 999;
+      const then = new Date(dateStr);
+      return Math.floor((now - then) / (1000 * 60 * 60 * 24));
+    };
+
+    if ((firstName !== data.firstName || lastName !== data.lastName)) {
+      if (diffDays(data.lastNameChangedAt) < 30) {
+        message += 'Имя и фамилию можно менять раз в 30 дней.\n';
+      } else {
+        data.firstName = firstName;
+        data.lastName = lastName;
+        data.lastNameChangedAt = now.toISOString();
+      }
+    }
+
+    if (avatar !== data.avatar) {
+      if (diffDays(data.avatarChangedAt) < 14) {
+        message += 'Аватар можно менять раз в 14 дней.';
+      } else {
+        data.avatar = avatar;
+        data.avatarChangedAt = now.toISOString();
+      }
+    }
+
+    if (message) {
+      profileMessage.style.color = 'red';
+      profileMessage.textContent = message.trim();
+      return;
+    }
+
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(data));
+    profileMessage.style.color = 'green';
+    profileMessage.textContent = 'Профиль обновлён!';
+    headerAvatar.src = data.avatar;
+
+    setTimeout(() => {
+      profileMessage.textContent = '';
+    }, 2000);
+  });
+
+  // Инициализация
+  window.addEventListener('DOMContentLoaded', loadProfile);
+</script>
+</body>
+</html>
