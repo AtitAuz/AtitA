@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>AtitA - Кафе Мороженого</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/AtitA/images/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/AtitA/images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/AtitA/images/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/AtitA/images/favicon-96x96.png" />
+  <link rel="manifest" href="/AtitA/site.webmanifest" />
+
+  <style>
+    #profileBtn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 9999;
+      display: none; /* Скрываем по умолчанию */
+      align-items: center;
+      gap: 8px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    #profileBtn img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Кнопка профиля -->
+<button id="profileBtn">
+  <img src="images/default-avatar.png" id="header-avatar" alt="Профиль" />
+  <span id="profileName" style="margin-left: 8px; color: white; font-weight: bold;"></span>
+</button>
+
+<header>
+  <div class="logo">
+    <img src="images/logo.png" alt="AtitA Logo" />
+  </div>
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
+</header>
+
+<nav class="navbar">
+  <a href="index.html" class="active" data-i18n="home">Главная</a>
+  <a href="menu.html" data-i18n="menu">Меню</a>
+  <a href="login.html" data-i18n="login" id="loginLink">Вход</a>
+  <a href="register.html" data-i18n="register" id="registerLink">Регистрация</a>
+</nav>
+
+<!-- Кнопки языка -->
+<div class="lang-switcher">
+  <button onclick="setLanguage('ru')">РУС</button>
+  <button onclick="setLanguage('uz')">O‘ZB</button>
+</div>
+
+<main>
+  <section id="slider">
+    <h2 data-i18n="popular_flavors">🍧 Популярные вкусы</h2>
+    <div class="slider-container">
+      <button class="slider-btn left" onclick="prevSlide()">&#10094;</button>
+      <div class="slider">
+        <div class="slide">
+          <img src="images/icecream chocolade.jpg" alt="Шоколадное мороженое" width="300" />
+          <p data-translate="slide_chocolate">Шоколад</p>
+        </div>
+        <div class="slide">
+          <img src="images/icecream crezm brule.jpg" alt="Крем Брюле" width="300" />
+          <p data-translate="slide_creme_brulee">Крем Брюле</p>
+        </div>
+        <div class="slide">
+          <img src="images/icecream oreo.jpg" alt="Орео" width="300" />
+          <p data-translate="slide_oreo">Орео</p>
+        </div>
+        <div class="slide">
+          <img src="images/icecream rafaelo.jpg" alt="Рафаэлло" width="300" />
+          <p data-translate="slide_rafaello">Рафаэлло</p>
+        </div>
+      </div>
+      <button class="slider-btn right" onclick="nextSlide()">&#10095;</button>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-i18n="welcome_title">Добро пожаловать в AtitA!</h2>
+    <p data-i18n="welcome_text">Лучшее мороженое в Ташкенте! — свежесть и вкус каждый день!</p>
+  </section>
+</main>
+
+<footer>
+  <p data-i18n="footer">&copy; 2023 AtitA. Все права защищены.</p>
+</footer>
+
+<script>
+  // Слайдер
+  let currentIndex = 0;
+  function updateSlider() {
+    const slider = document.querySelector('.slider');
+    const slideWidth = 320;
+    slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+  }
+  function prevSlide() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateSlider();
+    }
+  }
+  function nextSlide() {
+    const totalSlides = document.querySelectorAll('.slide').length;
+    if (currentIndex < totalSlides - 1) {
+      currentIndex++;
+      updateSlider();
+    }
+  }
+
+  // Переводы
+  const translations = {
+    ru: {
+      slide_chocolate: "Шоколад",
+      slide_creme_brulee: "Крем Брюле",
+      slide_oreo: "Орео",
+      slide_rafaello: "Рафаэлло",
+      home: "Главная",
+      menu: "Меню",
+      login: "Вход",
+      register: "Регистрация",
+      popular_flavors: "🍧 Популярные вкусы",
+      welcome_title: "Добро пожаловать в AtitA!",
+      welcome_text: "Лучшее мороженое в Ташкенте! — свежесть и вкус каждый день!",
+      footer: "&copy; 2023 AtitA. Все права защищены."
+    },
+    uz: {
+      slide_chocolate: "Shokolad",
+      slide_creme_brulee: "Krem bryule",
+      slide_oreo: "Oreo",
+      slide_rafaello: "Rafaello",
+      home: "Bosh sahifa",
+      menu: "Menyu",
+      login: "Kirish",
+      register: "Ro‘yxatdan o‘tish",
+      popular_flavors: "🍧 Mashhur taʼmlar",
+      welcome_title: "AtitAʼga xush kelibsiz!",
+      welcome_text: "Toshkentdagi eng yaxshi muzqaymoq — har kuni yangilik va lazzat!",
+      footer: "&copy; 2023 AtitA. Barcha huquqlar himoyalangan."
+    }
+  };
+  function setLanguage(lang) {
+    const elements = document.querySelectorAll('[data-i18n]');
+    elements.forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[lang][key]) {
+        el.innerHTML = translations[lang][key];
+      }
+    });
+    localStorage.setItem('lang', lang);
+  }
+
+  // Отображение кнопки профиля и меню Вход/Регистрация
+  function updateAuthDisplay() {
+    const profileBtn = document.getElementById('profileBtn');
+    const loginLink = document.getElementById('loginLink');
+    const registerLink = document.getElementById('registerLink');
+
+    const profile = JSON.parse(localStorage.getItem('user_profile'));
+    if (profile && profile.name) {
+      // Пользователь залогинен — показываем кнопку профиля и скрываем вход/регистрацию
+      profileBtn.style.display = 'flex';
+      loginLink.style.display = 'none';
+      registerLink.style.display = 'none';
+
+      // Обновляем аватар и имя
+      const avatarEl = document.getElementById('header-avatar');
+      const nameEl = document.getElementById('profileName');
+      avatarEl.src = profile.avatar || 'images/default-avatar.png';
+      nameEl.textContent = profile.name;
+    } else {
+      // Пользователь не залогинен — скрываем кнопку профиля и показываем вход/регистрацию
+      profileBtn.style.display = 'none';
+      loginLink.style.display = 'inline-block';
+      registerLink.style.display = 'inline-block';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('lang') || 'ru';
+    setLanguage(savedLang);
+    updateAuthDisplay();
+  });
+
+  // Кнопка профиля — переход в профиль
+  document.getElementById('profileBtn').addEventListener('click', () => {
+    const profileData = localStorage.getItem('user_profile');
+    if (profileData) {
+      window.location.href = 'profile.html';
+    } else {
+      alert('Для изменения профиля необходимо зарегистрироваться.');
+    }
+  });
+
+  function toggleMenu() {
+    const navbar = document.querySelector('.navbar');
+    navbar.classList.toggle('mobile-visible');
+  }
+</script>
+
+</body>
+</html>
