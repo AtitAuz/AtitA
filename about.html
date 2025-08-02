@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>О нас — AtitA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #e0f7ff;
+      color: #333;
+    }
+
+    /* Шапка */
+    header {
+      background-color: #00c6ff;
+      padding: 15px 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-container img {
+      height: 50px;
+    }
+
+    .logo-container h1 {
+      font-size: 36px;
+      color: white;
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive;
+    }
+
+    .nav-buttons {
+      margin-top: 15px;
+    }
+
+    .nav-buttons a {
+      background-color: #007acc;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 20px;
+      display: inline-block;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .nav-buttons a:hover {
+      background-color: #005fa3;
+    }
+
+    /* Языки */
+    .lang-buttons {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .lang-buttons button {
+      background-color: #007acc;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      text-align: center;
+      color: #00aaff;
+    }
+
+    #map {
+      width: 100%;
+      height: 500px;
+      margin-top: 30px;
+      border: 3px solid #00bfff;
+      border-radius: 10px;
+    }
+
+    footer {
+      background-color: #00bfff;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="lang-buttons">
+    <button>РУС</button>
+    <button>O‘ZB</button>
+  </div>
+
+  <div class="logo-container">
+  <a href="index.html">
+    <img src="images/logo.png" alt="Логотип AtitA" class="main-logo" />
+  </a>
+</div>
+
+  <div class="nav-buttons">
+    <a href="index.html">Главная</a>
+    <a href="menu.html">Меню</a>
+    <a href="about.html">О нас</a>
+    <a href="login.html">Вход</a>
+    <a href="register.html">Регистрация</a>
+  </div>
+</header>
+
+<div class="container"> 
+  <h2>О нас</h2>
+  <p>
+    AtitA — это весёлый и яркий бренд мороженого, созданный с любовью для всей семьи. Мы заботимся о качестве продуктов,
+    использовании натуральных ингредиентов и всегда стараемся дарить радость!
+  </p>
+
+  <div id="map"></div>
+</div>
+
+<footer>
+  © 2023 AtitA. Все права защищены.
+</footer>
+
+<!-- Yandex Maps -->
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+<script>
+  ymaps.ready(init);
+  function init() {
+    var map = new ymaps.Map("map", {
+      center: [41.332679, 69.328137], // Твои координаты
+      zoom: 16
+    });
+
+    var placemark = new ymaps.Placemark([41.332679, 69.328137], {
+      hintContent: 'Кафе AtitA',
+      balloonContent: 'Наше кафе: Мирзо-Улугбек, Буз-1, дом 28'
+    }, {
+      iconLayout: 'default#image',
+      iconImageHref: 'images/map.png',  // Путь к кастомной иконке
+      iconImageSize: [50, 60],               // Размер иконки — подбери по необходимости
+      iconImageOffset: [-25, -50]            // Смещение, чтобы точка указывала точно
+    });
+
+    map.geoObjects.add(placemark);
+  }
+</script>
+
+</body>
+</html>
