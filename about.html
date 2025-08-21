@@ -1,171 +1,250 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>О нас — AtitA</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-      background-color: #e0f7ff;
-      color: #333;
+    @font-face {
+      font-family: 'Toxigenesis';
+      src: url('text/Toxigenesis.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
     }
 
-    /* Шапка */
+    body {
+      font-family: 'Toxigenesis', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('images/back.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      color: white;
+    }
+
     header {
-      background-color: #00c6ff;
-      padding: 15px 0;
+      background-color: #00c0ff;
+      color: white;
+      padding: 20px 20px 60px;
       text-align: center;
       position: relative;
     }
 
-    .logo-container {
+    .logo img {
+      max-width: 300px;
+      height: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .logo img:hover {
+      transform: scale(1.05);
+    }
+
+    .navbar {
       display: flex;
       justify-content: center;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-container img {
-      height: 50px;
-    }
-
-    .logo-container h1 {
-      font-size: 36px;
-      color: white;
-      margin: 0;
-      font-family: 'Comic Sans MS', cursive;
-    }
-
-    .nav-buttons {
-      margin-top: 15px;
-    }
-
-    .nav-buttons a {
-      background-color: #007acc;
-      color: white;
-      text-decoration: none;
-      padding: 10px 20px;
-      margin: 5px;
-      border-radius: 20px;
-      display: inline-block;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
-    }
-
-    .nav-buttons a:hover {
-      background-color: #005fa3;
-    }
-
-    /* Языки */
-    .lang-buttons {
+      gap: 20px;
+      background-color: #00c0ff;
+      padding: 15px 0;
       position: absolute;
-      top: 15px;
-      left: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      bottom: 0;
+      left: 0;
+      right: 0;
     }
 
-    .lang-buttons button {
-      background-color: #007acc;
+    .navbar a {
       color: white;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 12px;
-      cursor: pointer;
+      background-color: #008cba;
+      padding: 10px 25px;
+      border-radius: 30px;
+      text-decoration: none;
       font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s, transform 0.2s;
+      box-sizing: border-box;
+      font-family: 'Toxigenesis', Arial, sans-serif;
     }
 
-    .container {
-      padding: 30px;
-      max-width: 1000px;
-      margin: 0 auto;
+    .navbar a:hover {
+      background-color: #005f7f;
+      transform: scale(1.05);
     }
 
-    h2 {
-      text-align: center;
-      color: #00aaff;
+    .navbar a.active {
+      background-color: #004f6e;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 60px auto 100px;
+      display: flex;
+      gap: 30px;
+      background: transparent;
+      padding: 0 15px;
+      align-items: flex-start;
+      box-sizing: border-box;
+    }
+
+    .about-text {
+      flex: 1;
+      min-width: 250px;
+      color: white;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .about-text h2 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .about-text p {
+      font-size: 1.2rem;
+      line-height: 1.5;
+      margin-bottom: 0;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
     }
 
     #map {
-      width: 100%;
-      height: 500px;
-      margin-top: 30px;
-      border: 3px solid #00bfff;
-      border-radius: 10px;
+      flex: 1;
+      min-width: 300px;
+      height: 400px;
+      border-radius: 6px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      border: 3px solid white;
+      background: transparent !important;
+      box-sizing: border-box;
     }
 
     footer {
-      background-color: #00bfff;
-      color: white;
       text-align: center;
-      padding: 15px;
-      margin-top: 50px;
+      background-color: #00c0ff;
+      color: white;
+      padding: 15px 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      font-weight: bold;
+      font-family: 'Toxigenesis', Arial, sans-serif;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .lang-switcher {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 1000;
+    }
+
+    .lang-switcher button {
+      background-color: #008cba;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      font-family: 'Toxigenesis', Arial, sans-serif;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .lang-switcher button:hover {
+      background-color: #005f7f;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 700px) {
+      main {
+        flex-direction: column;
+        max-width: 90%;
+      }
+
+      #map {
+        height: 300px;
+        min-width: auto;
+        border-radius: 8px;
+      }
     }
   </style>
 </head>
 <body>
-
-<header>
-  <div class="lang-buttons">
+  <div class="lang-switcher">
     <button>РУС</button>
     <button>O‘ZB</button>
   </div>
 
-  <div class="logo-container">
-  <a href="index.html">
-    <img src="images/logo.png" alt="Логотип AtitA" class="main-logo" />
-  </a>
-</div>
+  <header>
+    <div class="logo">
+      <img src="images/logo.png" alt="Логотип AtitA" />
+    </div>
+    <nav class="navbar">
+      <a href="index.html">Главная</a>
+      <a href="menu.html">Меню</a>
+      <a href="about.html" class="active">О нас</a>
+    </nav>
+  </header>
 
-  <div class="nav-buttons">
-    <a href="index.html">Главная</a>
-    <a href="menu.html">Меню</a>
-    <a href="about.html">О нас</a>
-    <a href="login.html">Вход</a>
-    <a href="register.html">Регистрация</a>
-  </div>
-</header>
+  <main>
+    <div class="about-text">
+      <h2>О нас</h2>
+      <p>
+        AtitA — это весёлый и яркий бренд мороженого, созданный с любовью для всей семьи. Мы заботимся о качестве продуктов,
+        использовании натуральных ингредиентов и всегда стараемся дарить радость!
+      </p>
+    </div>
+    <div id="map"></div>
+  </main>
 
-<div class="container"> 
-  <h2>О нас</h2>
-  <p>
-    AtitA — это весёлый и яркий бренд мороженого, созданный с любовью для всей семьи. Мы заботимся о качестве продуктов,
-    использовании натуральных ингредиентов и всегда стараемся дарить радость!
-  </p>
+  <footer>
+    Телефон: +7 (999) 123-45-67 &nbsp; | &nbsp;
+    © 2023 AtitA. Все права защищены. &nbsp; | &nbsp;
+    <a href="https://tiktok.com/@atitabrand" target="_blank">TikTok</a>
+    <a href="https://instagram.com/atitabrand" target="_blank">Instagram</a>
+    <a href="https://t.me/atitabrand" target="_blank">Telegram</a>
+  </footer>
 
-  <div id="map"></div>
-</div>
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+  <script>
+    ymaps.ready(init);
+    function init() {
+      var map = new ymaps.Map("map", {
+        center: [41.332679, 69.328137],
+        zoom: 16,
+        controls: ['zoomControl']
+      });
 
-<footer>
-  © 2023 AtitA. Все права защищены.
-</footer>
+      var placemark = new ymaps.Placemark([41.332679, 69.328137], {
+        hintContent: 'Кафе AtitA',
+        balloonContent: 'Наше кафе: Мирзо-Улугбек, Буз-1, дом 28'
+      }, {
+        iconLayout: 'default#image',
+        iconImageHref: 'images/map.png',
+        iconImageSize: [50, 60],
+        iconImageOffset: [-25, -50]
+      });
 
-<!-- Yandex Maps -->
-<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
-<script>
-  ymaps.ready(init);
-  function init() {
-    var map = new ymaps.Map("map", {
-      center: [41.332679, 69.328137], // Твои координаты
-      zoom: 16
-    });
-
-    var placemark = new ymaps.Placemark([41.332679, 69.328137], {
-      hintContent: 'Кафе AtitA',
-      balloonContent: 'Наше кафе: Мирзо-Улугбек, Буз-1, дом 28'
-    }, {
-      iconLayout: 'default#image',
-      iconImageHref: 'images/map.png',  // Путь к кастомной иконке
-      iconImageSize: [50, 60],               // Размер иконки — подбери по необходимости
-      iconImageOffset: [-25, -50]            // Смещение, чтобы точка указывала точно
-    });
-
-    map.geoObjects.add(placemark);
-  }
-</script>
-
+      map.geoObjects.add(placemark);
+    }
+  </script>
 </body>
 </html>
